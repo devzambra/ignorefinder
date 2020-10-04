@@ -7,13 +7,13 @@ const App = React.memo(() => {
 
   useEffect(() => {
     if (templates.length === 0) {
-      fetch('https://www.toptal.com/developers/gitignore/api/list?format=json', {
+      fetch('https://api.github.com/gitignore/templates', {
           headers: {
-              Accept: 'application/json'
+              Accept: 'application/vnd.github.v3+json',
           }
       })
       .then(res => res.json())
-      .then(data => setTemplates(Object.keys(data)))
+      .then(data => setTemplates(data))
   }
   }, [templates.length])
 

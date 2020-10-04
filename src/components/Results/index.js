@@ -13,7 +13,24 @@ export default React.memo(({search, templates}) => {
     }, [search, templates])
 
     const downloadIgnore = (name) => {
-        window.open('https://www.toptal.com/developers/gitignore/api/' + name, '_blank')
+        fetch('https://api.github.com/gitignore/templates/' + name , {
+            headers: {
+                Accept: 'application/vnd.github.v3.raw+json'
+            }
+        })
+        .then(res => res.blob())
+        .then(data => {
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', '.gitignore');
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.parentNode.removeChild(link);
+        })
     }
 
     const classes = 'h-64 sm:w-1/2 w-full p-2 rounded-lg mt-2'
